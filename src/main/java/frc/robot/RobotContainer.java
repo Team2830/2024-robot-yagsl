@@ -15,7 +15,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.IntakeFromShooter;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 
@@ -29,13 +32,14 @@ public class RobotContainer
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                         "swerve/neo"));
+                                                                         "swerve/neo")); 
+  private final Shooter m_Shooter = new Shooter();                                                                                                                                        
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   CommandJoystick driverController = new CommandJoystick(1);
 
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
-  XboxController driverXbox = new XboxController(0);
+  CommandXboxController driverXbox = new CommandXboxController(0);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -52,10 +56,10 @@ public class RobotContainer
                                                                                                 OperatorConstants.LEFT_X_DEADBAND),
                                                                    () -> MathUtil.applyDeadband(driverXbox.getRightX(),
                                                                                                 OperatorConstants.RIGHT_X_DEADBAND),
-                                                                   driverXbox::getYButtonPressed,
-                                                                   driverXbox::getAButtonPressed,
-                                                                   driverXbox::getXButtonPressed,
-                                                                   driverXbox::getBButtonPressed);
+                                                                   driverXbox.y(),
+                                                                   driverXbox.a(),
+                                                                   driverXbox.x(),
+                                                                   driverXbox.b());
 
     // Applies deadbands and inverts controls because joysticks
     // are back-right positive while robot
@@ -85,6 +89,7 @@ public class RobotContainer
 
     drivebase.setDefaultCommand(
         !RobotBase.isSimulation() ? driveFieldOrientedDirectAngle : driveFieldOrientedDirectAngleSim);
+      m_Shooter.setDefaultCommand(new IntakeFromShooter(m_Shooter));
   }
 
   /**
@@ -98,8 +103,10 @@ public class RobotContainer
   {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
-    new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
+    driverXbox.start().onTrue((new InstantCommand(drivebase::zeroGyro)));
+    driverXbox.back().onTrue(new InstantCommand(drivebase::addFakeVisionReading));
+    driverXbox.y().whileTrue(new Shoot(m_Shooter));
+    
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
   }
 
