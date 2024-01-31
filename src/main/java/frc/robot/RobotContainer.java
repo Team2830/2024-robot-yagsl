@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.IntakeFromShooter;
+import frc.robot.commands.PrepareToShoot;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.Shooter;
@@ -89,7 +90,7 @@ public class RobotContainer
 
     drivebase.setDefaultCommand(
         !RobotBase.isSimulation() ? driveFieldOrientedDirectAngle : driveFieldOrientedDirectAngleSim);
-      m_Shooter.setDefaultCommand(new IntakeFromShooter(m_Shooter));
+      // m_Shooter.setDefaultCommand(new IntakeFromShooter(m_Shooter));
   }
 
   /**
@@ -106,6 +107,8 @@ public class RobotContainer
     driverXbox.start().onTrue((new InstantCommand(drivebase::zeroGyro)));
     driverXbox.back().onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     driverXbox.y().whileTrue(new Shoot(m_Shooter));
+    driverXbox.x().whileTrue(new IntakeFromShooter(m_Shooter));
+    driverXbox.a().whileTrue(new PrepareToShoot(m_Shooter));
     
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
   }
