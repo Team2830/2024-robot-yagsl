@@ -16,9 +16,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.IntakeFromShooter;
+import frc.robot.commands.IntakeOff;
+import frc.robot.commands.IntakeOn;
+import frc.robot.commands.IntakeReverse;
 import frc.robot.commands.PrepareToShoot;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -34,14 +38,15 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/neo")); 
-  private final Shooter m_Shooter = new Shooter();                                                                                                                                        
+  private final Shooter m_Shooter = new Shooter();   
+  private final Intake m_Intake = new Intake();                                                                                                                                     
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   CommandJoystick driverController = new CommandJoystick(1);
 
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
   CommandXboxController driverXbox = new CommandXboxController(0);
-
+  CommandXboxController operatorXbox = new CommandXboxController(1);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -109,7 +114,9 @@ public class RobotContainer
     driverXbox.y().whileTrue(new Shoot(m_Shooter));
     driverXbox.x().whileTrue(new IntakeFromShooter(m_Shooter));
     driverXbox.a().whileTrue(new PrepareToShoot(m_Shooter));
-    
+    operatorXbox.b().whileTrue(new IntakeOff(m_Intake));
+    operatorXbox.a().whileTrue(new IntakeOn(m_Intake));
+    operatorXbox.y().whileTrue(new IntakeReverse(m_Intake));
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
   }
 
