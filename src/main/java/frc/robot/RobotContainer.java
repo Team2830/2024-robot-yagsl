@@ -112,11 +112,11 @@ public class RobotContainer
     driverXbox.start().onTrue((new InstantCommand(drivebase::zeroGyro)));
     driverXbox.back().onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     driverXbox.y().whileTrue(new Shoot(m_Shooter));
-    driverXbox.x().whileTrue(new IntakeFromShooter(m_Shooter));
-    driverXbox.a().whileTrue(new PrepareToShoot(m_Shooter));
-    operatorXbox.b().whileTrue(new IntakeOff(m_Intake));
-    operatorXbox.a().whileTrue(new IntakeOn(m_Intake));
-    operatorXbox.y().whileTrue(new IntakeReverse(m_Intake));
+    driverXbox.a().whileTrue(new IntakeFromShooter(m_Shooter));
+    driverXbox.x().whileTrue(new PrepareToShoot(m_Shooter));
+    // operatorXbox.b().whileTrue(new IntakeOff(m_Intake));
+    // driverXbox.a().whileTrue(new IntakeOn(m_Intake));
+    // driverXbox.b().whileTrue(new IntakeReverse(m_Intake));
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
   }
 

@@ -12,12 +12,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /** Add your docs here. */
 public class Intake extends SubsystemBase {
 
-    private CANSparkMax topIntake = new CANSparkMax(13, MotorType.kBrushless);
-    private CANSparkMax bottomIntake = new CANSparkMax(14, MotorType.kBrushless);
+    private CANSparkMax topIntake = new CANSparkMax(13, MotorType.kBrushed);
+    private CANSparkMax bottomIntake = new CANSparkMax(14, MotorType.kBrushed);
 
     public Intake(){
-        topIntake.setInverted(false);
-        bottomIntake.setInverted(false);
+        topIntake.setInverted(true);
+        bottomIntake.setInverted(true);
+        topIntake.setSmartCurrentLimit(80);
+        bottomIntake.setSmartCurrentLimit(80);  
     }
 
     @Override
