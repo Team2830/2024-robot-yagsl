@@ -231,4 +231,8 @@ public class SwerveController
   {
     config.maxAngularVelocity = angularVelocity;
   }
+
+  public void setLastAngleScalar(double angle){
+    lastAngleScalar = angle;
+  }
 }

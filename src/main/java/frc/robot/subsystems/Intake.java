@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -12,14 +13,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /** Add your docs here. */
 public class Intake extends SubsystemBase {
 
-    private CANSparkMax topIntake = new CANSparkMax(13, MotorType.kBrushed);
-    private CANSparkMax bottomIntake = new CANSparkMax(14, MotorType.kBrushed);
+    private WPI_TalonFX topIntake = new WPI_TalonFX(13);
+    private WPI_TalonFX bottomIntake = new WPI_TalonFX(14 );
 
     public Intake(){
-        topIntake.setInverted(true);
-        bottomIntake.setInverted(true);
-        topIntake.setSmartCurrentLimit(80);
-        bottomIntake.setSmartCurrentLimit(80);  
+        topIntake.setInverted(false);
+        bottomIntake.setInverted(false);
+        // topIntake.setSmartCurrentLimit(140);
+        // bottomIntake.setSmartCurrentLimit(140);  
     }
 
     @Override
@@ -33,5 +34,9 @@ public class Intake extends SubsystemBase {
     bottomIntake.set(speed);
   }
 
+  public void setOutput(double voltage){
+    topIntake.setVoltage(voltage);
+    bottomIntake.setVoltage(voltage);
+  }
    
 }
