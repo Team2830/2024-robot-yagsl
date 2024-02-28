@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -52,10 +53,10 @@ public class RobotContainer
 
 
   private final Trigger leftTrigger = new Trigger(() ->
-    (Math.abs(driverXbox.getRawAxis(XboxController.Axis.kLeftTrigger.value)) > 0.2));
+    Math.abs(driverXbox.getLeftTriggerAxis()) > 0.2);
 
   private final Trigger rightTrigger = new Trigger(() ->
-    (Math.abs(driverXbox.getRawAxis(XboxController.Axis.kRightTrigger.value)) > 0.2));
+    Math.abs(driverXbox.getRightTriggerAxis()) > 0.2);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */

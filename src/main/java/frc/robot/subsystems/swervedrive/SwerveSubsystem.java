@@ -403,7 +403,7 @@ public class SwerveSubsystem extends SubsystemBase
   }
 
   public void setLastAngleScalar(double angle){
-    swerveDrive.swerveController.setLastAngleScalar(angle);
+    swerveDrive.zeroGyro();
   }
 
   /**
