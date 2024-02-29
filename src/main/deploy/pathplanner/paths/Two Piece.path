@@ -3,28 +3,28 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3122346472613169,
-        "y": 5.589805823486292
+        "x": 1.31,
+        "y": 5.59
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3122346472613167,
-        "y": 5.589805823486292
+        "x": 2.3099999999999996,
+        "y": 5.59
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.820780570336069,
+        "x": 2.82,
         "y": 5.589805823486292
       },
       "prevControl": {
-        "x": 2.881426382270618,
+        "x": 2.880645811934549,
         "y": 5.589805823486292
       },
       "nextControl": {
-        "x": 1.820780570336069,
+        "x": 1.8199999999999998,
         "y": 5.589805823486292
       },
       "isLocked": false,
@@ -48,11 +48,11 @@
     },
     {
       "anchor": {
-        "x": 2.820780570336069,
+        "x": 2.82,
         "y": 5.589805823486292
       },
       "prevControl": {
-        "x": 1.5682881245918996,
+        "x": 1.5675075542558305,
         "y": 5.589805823486292
       },
       "nextControl": null,
@@ -74,41 +74,6 @@
   ],
   "constraintZones": [],
   "eventMarkers": [
-    {
-      "name": "SHOOOT",
-      "waypointRelativePos": 0.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "PrepareToShoot"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 2.0
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 1.0
-              }
-            }
-          ]
-        }
-      }
-    },
     {
       "name": "INTAKEE",
       "waypointRelativePos": 0.4,
@@ -132,41 +97,6 @@
               "type": "named",
               "data": {
                 "name": "IntakeOff"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "SHOOTx2",
-      "waypointRelativePos": 2.0999999999999996,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "PrepareToShoot"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 2.0
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 1.0
               }
             }
           ]

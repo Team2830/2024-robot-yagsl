@@ -70,6 +70,7 @@ public class RobotContainer
     NamedCommands.registerCommand("IntakeOn", new IntakeOn(m_Intake));
     NamedCommands.registerCommand("PrepareToShoot", new PrepareToShoot(m_Shooter));
     NamedCommands.registerCommand("Shoot", new Shoot(m_Shooter));
+    NamedCommands.registerCommand("Shoot Auto", new ShootAuto(m_Shooter));
 
     // Configure the trigger bindings
     configureBindings();
@@ -153,8 +154,8 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomousas
-   //return drivebase.getAutonomousCommand("Two Piece Auto", true);
-  return new PathPlannerAuto("Straight Auto");
+   return new PathPlannerAuto("Two Piece Auto");
+  // return new PathPlannerAuto("Straight Auto");
   // return new ShootAuto(m_Shooter);
   }
   public void setDriveMode()
