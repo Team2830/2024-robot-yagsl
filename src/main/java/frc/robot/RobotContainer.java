@@ -139,7 +139,7 @@ public class RobotContainer
     driverXbox.rightTrigger().whileTrue(new Shoot(m_Shooter));
 
     //Drive Commands
-    driverXbox.povUp().onTrue((new InstantCommand(()->drivebase.setLastAngleScalar(0))));
+    // driverXbox.povUp().onTrue((new InstantCommand(()->drivebase.setLastAngleScalar(0))));
   }
 
   /**
@@ -149,8 +149,9 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
+    return drivebase.sysIdDriveMotorCommand();
     // An example command will be run in autonomousas
-   return new PathPlannerAuto("Two Piece Auto");
+  //  return new PathPlannerAuto("Two Piece Auto");
   // return new PathPlannerAuto("Straight Auto");
   // return new ShootAuto(m_Shooter);
   }
