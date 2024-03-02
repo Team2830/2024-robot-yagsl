@@ -9,10 +9,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -26,6 +29,7 @@ import frc.robot.commands.ShootAuto;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterAdjuster;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import java.util.function.BooleanSupplier;
@@ -45,11 +49,13 @@ public class RobotContainer
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/neo")); 
   private final Shooter m_Shooter = new Shooter();   
-  private final Intake m_Intake = new Intake();                                                                                                                                     
+  private final Intake m_Intake = new Intake();
+  private final ShooterAdjuster m_ShooterAdjuster = new ShooterAdjuster();                                                                                                                                     
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   CommandXboxController driverXbox = new CommandXboxController(0);
   CommandXboxController operatorXbox = new CommandXboxController(1);
+  CommandJoystick pretendJoystic = new CommandJoystick(2);
 
 
   private final Trigger leftTrigger = new Trigger(() ->
@@ -62,6 +68,7 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+    pretendJoystic.button(1).onTrue(getAutonomousCommand());
     //registers Named Commands
     NamedCommands.registerCommand("IntakeOff", new IntakeOff(m_Intake));
     NamedCommands.registerCommand("IntakeOn", new IntakeOn(m_Intake));
@@ -130,13 +137,18 @@ public class RobotContainer
     // driverXbox.back().onTrue(new InstantCommand(drivebase::addFakeVisionReading));
  
     //Intake Commands
-    driverXbox.start().whileTrue(new IntakeFromShooter(m_Shooter));
-    driverXbox.rightBumper().whileTrue(new IntakeOn(m_Intake));
-    driverXbox.b().whileTrue(new IntakeReverse(m_Intake));
+    operatorXbox.start().whileTrue(new IntakeFromShooter(m_Shooter));
+    operatorXbox.rightTrigger().whileTrue(new IntakeOn(m_Intake));
+    operatorXbox.leftTrigger().whileTrue(new IntakeReverse(m_Intake));
 
     //Shooter Commands
-    driverXbox.leftTrigger().onTrue(new PrepareToShoot(m_Shooter));
+    operatorXbox.y().onTrue(new PrepareToShoot(m_Shooter));
     driverXbox.rightTrigger().whileTrue(new Shoot(m_Shooter));
+    operatorXbox.x().onTrue(new InstantCommand(() -> {m_ShooterAdjuster.setPosition(Constants.ShooterAngles.UNDER_STAGE);}, m_ShooterAdjuster));
+    operatorXbox.povUp().onTrue(new InstantCommand(() -> {m_ShooterAdjuster.setPosition(Constants.ShooterAngles.SUBWOOFER);}, m_ShooterAdjuster));
+    operatorXbox.povLeft().onTrue(new InstantCommand(() -> {m_ShooterAdjuster.setPosition(Constants.ShooterAngles.AMP);}, m_ShooterAdjuster));
+    operatorXbox.povRight().onTrue(new InstantCommand(() -> {m_ShooterAdjuster.setPosition(Constants.ShooterAngles.PEDESTAL);},m_ShooterAdjuster));
+    operatorXbox.b().onTrue(new InstantCommand(() -> {m_ShooterAdjuster.setPosition(Constants.ShooterAngles.AMP_ZONE);},m_ShooterAdjuster));
 
     //Drive Commands
     // driverXbox.povUp().onTrue((new InstantCommand(()->drivebase.setLastAngleScalar(0))));

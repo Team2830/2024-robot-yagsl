@@ -48,5 +48,14 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+
+  public static class ShooterAngles {
+    public static final double UNDER_STAGE = 20;
+    public static final double SUBWOOFER = 59;
+    public static final double AMP = 30;
+    public static final double PEDESTAL = 30;
+    public static final double AMP_ZONE = 40;
+    
+  }
  
 }
