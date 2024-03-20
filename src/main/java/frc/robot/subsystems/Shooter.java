@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -24,6 +25,8 @@ public class Shooter extends SubsystemBase {
 
     bottomLeft.setIdleMode(IdleMode.kBrake);
     bottomRight.setIdleMode(IdleMode.kBrake);
+    SmartDashboard.putNumber("Top Amp Speed", .2);
+    SmartDashboard.putNumber("Bottom Amp Speed", .3);
   }
 
   @Override
@@ -32,14 +35,24 @@ public class Shooter extends SubsystemBase {
     
   }
 
-    public void setTopMotorSpeed(double speed){
-    topLeft.set(speed);
-    topRight.set(speed);
+    public void setTopMotorVolts(double volts){
+    topLeft.setVoltage(volts);
+    topRight.setVoltage(volts);
 
     }
 
-    public void setBottomMotorSpeed(double speed){
-      bottomLeft.set(speed);
-      bottomRight.set(speed);
+    public void setBottomMotorVolts(double volts){
+      bottomLeft.setVoltage(volts);
+      bottomRight.setVoltage(volts);
+    }
+
+    public void shooterOff(){
+      setBottomMotorVolts(0);
+      setTopMotorVolts(0);
+    }
+
+    public void ampShot() {
+      setTopMotorVolts(SmartDashboard.getNumber("Top Amp Speed", .2)*12.0);
+      setBottomMotorVolts(SmartDashboard.getNumber("Bottom Amp Speed", .3)*12.0);
     }
   }

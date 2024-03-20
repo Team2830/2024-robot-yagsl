@@ -9,10 +9,12 @@ import frc.robot.subsystems.Intake;
 
 public class IntakeOn extends Command {
   Intake intake;
+  boolean turnOff;
   /** Creates a new IntakeOn. */
-  public IntakeOn(Intake intake) {
+  public IntakeOn(Intake intake, boolean turnOff) {
     this.intake = intake;
     addRequirements(intake);
+    this.turnOff = turnOff;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -29,7 +31,10 @@ public class IntakeOn extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setOutput(0);
+    if(turnOff) {
+      intake.setOutput(0);
+    }
+    
   }
 
   // Returns true when the command should end.

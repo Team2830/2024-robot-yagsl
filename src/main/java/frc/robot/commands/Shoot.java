@@ -9,9 +9,13 @@ import frc.robot.subsystems.Shooter;
 
 public class Shoot extends Command {
    Shooter shooter;
+   double bottomSpeed;
+   double topSpeed;
   /** Creates a new Shoot. */
-  public Shoot(Shooter shooter) {
+  public Shoot(Shooter shooter, double bottomSpeed, double topSpeed) {
     this.shooter = shooter;
+    this.bottomSpeed = bottomSpeed;
+    this.topSpeed = topSpeed;
     addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -23,15 +27,15 @@ public class Shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  shooter.setTopMotorSpeed(1);
-  shooter.setBottomMotorSpeed(1);
+  shooter.setTopMotorVolts(topSpeed);
+  shooter.setBottomMotorVolts(bottomSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setBottomMotorSpeed(0);
-    shooter.setTopMotorSpeed(0);
+    shooter.setBottomMotorVolts(0);
+    shooter.setTopMotorVolts(0);
   }
 
   // Returns true when the command should end.

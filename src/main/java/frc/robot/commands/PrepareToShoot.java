@@ -25,8 +25,8 @@ public class PrepareToShoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  shooter.setTopMotorSpeed(1);
-  shooter.setBottomMotorSpeed(0);
+  shooter.setTopMotorVolts(12);
+  shooter.setBottomMotorVolts(0);
   }
 
   // Called once the command ends or is interrupted.

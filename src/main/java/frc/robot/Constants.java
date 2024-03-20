@@ -29,7 +29,7 @@ public final class Constants
   {
 
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.7, 0, 0);
-    public static final PIDConstants ANGLE_PID   = new PIDConstants(0.4, 0, 0.01);
+    public static final PIDConstants ANGLE_PID   = new PIDConstants(.8, 0, 0.01);
   }
 
   public static final class DrivebaseConstants
@@ -50,11 +50,11 @@ public final class Constants
   }
 
   public static class ShooterAngles {
-    public static final double UNDER_STAGE = 20;
-    public static final double SUBWOOFER = 59;
-    public static final double AMP = 30;
-    public static final double PEDESTAL = 30;
-    public static final double AMP_ZONE = 40;
+    public static final double UNDER_STAGE = 26;
+    public static final double SUBWOOFER = 2;
+    public static final double AMP = 10.75;
+    public static final double PEDESTAL = 14;
+    public static final double AMP_ZONE = 10;
     
   }
  

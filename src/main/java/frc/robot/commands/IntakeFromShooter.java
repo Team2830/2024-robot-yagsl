@@ -25,15 +25,15 @@ public class IntakeFromShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  shooter.setTopMotorSpeed(-.2);
-  shooter.setBottomMotorSpeed(0);
+  shooter.setTopMotorVolts(-.2 * 12);
+  shooter.setBottomMotorVolts(-.2 * 12);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setBottomMotorSpeed(0);
-    shooter.setTopMotorSpeed(0);
+    shooter.setBottomMotorVolts(0);
+    shooter.setTopMotorVolts(0);
   }
 
   // Returns true when the command should end.

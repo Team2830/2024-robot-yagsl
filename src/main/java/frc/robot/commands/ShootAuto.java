@@ -17,8 +17,8 @@ public class ShootAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new ParallelDeadlineGroup(new WaitCommand(1), new PrepareToShoot(shooter)), 
-    new ParallelDeadlineGroup(new WaitCommand(3), new Shoot(shooter)), 
-    new InstantCommand(()-> shooter.setTopMotorSpeed(0)),
-    new InstantCommand(()-> shooter.setTopMotorSpeed(0)));
+    new ParallelDeadlineGroup(new WaitCommand(3), new Shoot(shooter, 12, 12)), 
+    new InstantCommand(()-> shooter.setTopMotorVolts(0)),
+    new InstantCommand(()-> shooter.setTopMotorVolts(0)));
   }
 }

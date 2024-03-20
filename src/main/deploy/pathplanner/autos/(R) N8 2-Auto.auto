@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3122346472613169,
-      "y": 5.589805823486292
+      "x": 0.973104168430559,
+      "y": 4.209895599278378
     },
-    "rotation": 0.0
+    "rotation": -55.0
   },
   "command": {
     "type": "sequential",
@@ -18,7 +18,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 0.25
                 }
               },
               {
@@ -37,7 +37,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 0.75
                 }
               },
               {
@@ -50,9 +50,34 @@
           }
         },
         {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Side Intake (N8)"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeOn"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Two Piece"
+            "pathName": "Return and Score (N8)"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOff"
           }
         },
         {
@@ -62,7 +87,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 0.25
                 }
               },
               {
@@ -81,7 +106,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 0.75
                 }
               },
               {

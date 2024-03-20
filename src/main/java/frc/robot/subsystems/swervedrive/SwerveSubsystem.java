@@ -10,6 +10,8 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,11 +21,14 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants.AutonConstants;
 import java.io.File;
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -82,7 +87,8 @@ public class SwerveSubsystem extends SubsystemBase
       throw new RuntimeException(e);
     }
     swerveDrive.setHeadingCorrection(true); // Heading correction should only be used while controlling the robot via angle.
-    swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+    swerveDrive.setCosineCompensator(false);//!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+    swerveDrive.replaceSwerveModuleFeedforward(new SimpleMotorFeedforward(0, 2.2, 0.56));
     setupPathPlanner();
   }
 
@@ -196,16 +202,33 @@ public class SwerveSubsystem extends SubsystemBase
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier headingX,
                               DoubleSupplier headingY)
   {
+    final double speedMultiplier;
+    final double angle;
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+    if (alliance.isPresent()){
+      if (alliance.get() == Alliance.Red){
+        speedMultiplier = -1;
+        angle = Math.PI;
+      } else {
+        speedMultiplier = 1;
+        angle = 0;
+      }
+    } else {
+      speedMultiplier = 1;
+      angle = 0;
+    }
 
+    System.out.println(getLastAngleScalar());
+    System.out.println("IS BEING CALLED");
 
     // swerveDrive.setHeadingCorrection(true); // Normally you would want heading correction for this kind of control.
     return run(() -> {
-      double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth controll out
-      double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth controll out
+      double xInput = speedMultiplier * Math.pow(translationX.getAsDouble(), 3); // Smooth controll out
+      double yInput = speedMultiplier * Math.pow(translationY.getAsDouble(), 3); // Smooth controll out
       // Make the robot move
       driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(xInput, yInput,
-                                                                      headingX.getAsDouble(),
-                                                                      headingY.getAsDouble(),
+                                                                      speedMultiplier * headingX.getAsDouble(),
+                                                                      speedMultiplier * headingY.getAsDouble(),
                                                                       swerveDrive.getOdometryHeading().getRadians(),
                                                                       swerveDrive.getMaximumVelocity()));
     });
@@ -325,6 +348,8 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
+    SmartDashboard.putNumber("Last angle Scalar / Reg", swerveDrive.swerveController.lastAngleScalar);
+    SmartDashboard.putNumber("Last angle Scalar / PI", swerveDrive.swerveController.lastAngleScalar / Math.PI);
   }
 
   @Override
@@ -403,7 +428,11 @@ public class SwerveSubsystem extends SubsystemBase
   }
 
   public void setLastAngleScalar(double angle){
-    swerveDrive.zeroGyro();
+    swerveDrive.swerveController.lastAngleScalar = angle;
+  }
+
+  public double getLastAngleScalar(){
+    return swerveDrive.swerveController.lastAngleScalar;
   }
 
   /**
